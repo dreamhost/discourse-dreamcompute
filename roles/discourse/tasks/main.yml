@@ -1,0 +1,24 @@
+---
+- name: create filesystem on volume
+  filesystem:
+    dev: "/dev/vdb"
+    fstype: ext4
+
+- name: create mountpoint for volume
+  file:
+    mode: 0700
+    path: "/var/discourse"
+    state: directory
+
+- name: mount volume
+  mount:
+    fstype: ext4
+    src: "/dev/vdb"
+    state: mounted
+    name: "/var/discourse"
+
+- name: clone discourse docker repo
+  git:
+    repo: "https://github.com/discourse/discourse_docker.git"
+    dest: "/var/discourse/"
+    force: yes

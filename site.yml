@@ -1,0 +1,25 @@
+---
+- name: provision server
+  hosts: cloud
+  connection: local
+  vars_files:
+    - "vars/dreamcompute.yml"
+  roles:
+    - create_server
+
+- name: install python2 so we can use ansible
+  hosts: discourseservers
+  user: ubuntu
+  become: true
+  become_user: root
+  gather_facts: no
+  roles:
+    - python2
+
+- name: prepare discourse
+  hosts: discourseservers
+  user: ubuntu
+  become: true
+  become_user: root
+  roles:
+    - discourse

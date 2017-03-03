@@ -1,0 +1,8 @@
+---
+auth:
+  cloud: dreamcompute
+
+discourse:
+  volume_size: 30
+
+key_name: raynor

@@ -1,0 +1,3 @@
+---
+- name: install python2
+  raw: "apt update && apt install -y python"

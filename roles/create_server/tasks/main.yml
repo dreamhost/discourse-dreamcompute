@@ -1,0 +1,42 @@
+---
+- name: Create volume
+  os_volume:
+    state: present
+    cloud: "{{ auth.cloud }}"
+    size: "{{ discourse.volume_size }}"
+    wait: yes
+    display_name: discourse-volume
+
+- name: Create server
+  os_server:
+    state: "present"
+    cloud: "{{ auth.cloud }}"
+    name: discourse1
+    image: Ubuntu-16.04
+    key_name: "{{ key_name }}"
+    timeout: 200
+    flavor: 200
+    network: public
+    meta:
+      hostname: discourse1
+  register: discourse1
+
+- name: attach a volume for database to save data
+  os_server_volume:
+    state: present
+    cloud: "{{ auth.cloud }}"
+    server: discourse1
+    volume: discourse-volume
+    device: "/dev/vdb"
+
+- name: Add discourse server to discourse group
+  add_host:
+    name: "{{ discourse1.openstack.public_v4 }}"
+    groups: discourseservers
+  when: discourse1.openstack.public_v4 != ""
+
+- name: Add discourse server to discourse group
+  add_host:
+    name: "{{ discourse1.openstack.private_v4 }}"
+    groups: discourseservers
+  when: discourse1.openstack.public_v4 == ""
