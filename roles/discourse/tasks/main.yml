@@ -20,5 +20,9 @@
 - name: clone discourse docker repo
   git:
     repo: "https://github.com/discourse/discourse_docker.git"
-    dest: "/var/discourse/"
-    force: yes
+    dest: "/var/discourse/discourse_docker"
+
+- name: install docker
+  apt:
+    name: docker.io
+    state: installed
