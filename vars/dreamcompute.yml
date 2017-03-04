@@ -6,6 +6,13 @@ discourse:
   volume_size: 30
   flavor: 300
   image: Ubuntu-16.04
+  hostname: ""
+  admin_email: ""
+  smtp_server: ""
+  smtp_port: ""
+  smtp_user: ""
+  smtp_password: ""
+  lets_encrypt_email: ""
 
 key_name: raynor
 
