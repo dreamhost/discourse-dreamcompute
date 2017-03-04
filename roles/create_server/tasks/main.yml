@@ -12,10 +12,10 @@
     state: "present"
     cloud: "{{ auth.cloud }}"
     name: discourse1
-    image: Ubuntu-16.04
+    image: "{{ discourse.image }}"
     key_name: "{{ key_name }}"
     timeout: 200
-    flavor: 200
+    flavor: "{{ discourse.flavor }}"
     network: public
     meta:
       hostname: discourse1

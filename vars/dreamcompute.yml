@@ -4,5 +4,9 @@ auth:
 
 discourse:
   volume_size: 30
+  flavor: 300
+  image: Ubuntu-16.04
 
 key_name: raynor
+
+smtp:
