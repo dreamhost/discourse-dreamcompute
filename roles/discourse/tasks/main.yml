@@ -17,12 +17,25 @@
     state: mounted
     name: "/var/discourse"
 
+- name: install docker
+  apt:
+    name: docker.io
+    state: installed
+
 - name: clone discourse docker repo
   git:
     repo: "https://github.com/discourse/discourse_docker.git"
     dest: "/var/discourse/discourse_docker"
 
-- name: install docker
-  apt:
-    name: docker.io
-    state: installed
+- name: create setup script input file
+  template:
+    src: templates/setup_input.j2
+    dest: /tmp/setup_input
+    owner: root
+    group: root
+    mode: 0600
+
+- name: run discourse setup
+  shell: "./discourse-setup < /tmp/setup_input"
+  args:
+    chdir: /var/discourse/discourse_docker

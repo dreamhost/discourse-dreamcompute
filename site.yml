@@ -21,5 +21,7 @@
   user: ubuntu
   become: true
   become_user: root
+  vars_files:
+    - "vars/dreamcompute.yml"
   roles:
     - discourse

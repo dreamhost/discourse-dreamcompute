@@ -6,11 +6,11 @@ discourse:
   volume_size: 30
   flavor: 300
   image: Ubuntu-16.04
-  hostname: ""
-  admin_email: ""
-  smtp_server: ""
+  hostname: "discourse.example.com"
+  admin_email: "admin@example.com"
+  smtp_server: "discourse.example.com"
   smtp_port: ""
-  smtp_user: ""
+  smtp_user: "postmaster@discourse.example.com"
   smtp_password: ""
   lets_encrypt_email: ""
 
