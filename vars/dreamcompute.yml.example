@@ -1,19 +1,33 @@
 ---
+
+# The cloud from ~/.config/openstack/clouds.yml to use
 auth:
   cloud: dreamcompute
 
 discourse:
+
+  # the size in GB of the volume to attach to /var/discourse on the server
   volume_size: 30
+
+  # Nova flavor to use
   flavor: 300
+
+  # OS image to use
   image: Ubuntu-16.04
+
+  # DNS name for your server
   hostname: "discourse.example.com"
+
+  # The email address for the service admin
   admin_email: "admin@example.com"
+
+  # SMTP Configs
   smtp_server: "discourse.example.com"
   smtp_port: ""
   smtp_user: "postmaster@discourse.example.com"
   smtp_password: ""
+
   lets_encrypt_email: ""
 
+# ssh key to put on the server
 key_name: raynor
-
-smtp:
