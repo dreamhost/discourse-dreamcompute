@@ -27,6 +27,11 @@
     repo: "https://github.com/discourse/discourse_docker.git"
     dest: "/var/discourse/discourse_docker"
 
+- name: "check if discourse is already configured"
+  stat:
+    path: "/var/discourse/discourse_docker/containers/app.yml"
+  register: app_config
+
 - name: create setup script input file
   template:
     src: templates/setup_input.j2
@@ -34,8 +39,10 @@
     owner: root
     group: root
     mode: 0600
+  when: app_config.stat.exists == False
 
 - name: run discourse setup
   shell: "./discourse-setup < /tmp/setup_input"
   args:
     chdir: /var/discourse/discourse_docker
+  when: app_config.stat.exists == False
