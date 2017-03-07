@@ -1,16 +1,16 @@
 ---
-- name: create filesystem on volume
+- name: create ext4 filesystem on discourse volume
   filesystem:
     dev: "/dev/vdb"
     fstype: ext4
 
-- name: create mountpoint for volume
+- name: create mountpoint for discourse volume at /var/discourse
   file:
     mode: 0700
     path: "/var/discourse"
     state: directory
 
-- name: mount volume
+- name: mount the discourse volume at /var/discourse
   mount:
     fstype: ext4
     src: "/dev/vdb"
@@ -22,7 +22,7 @@
     name: docker.io
     state: installed
 
-- name: clone discourse docker repo
+- name: clone discourse docker repo to /var/discourse/discourse_docker
   git:
     repo: "https://github.com/discourse/discourse_docker.git"
     dest: "/var/discourse/discourse_docker"
@@ -32,7 +32,7 @@
     path: "/var/discourse/discourse_docker/containers/app.yml"
   register: app_config
 
-- name: create setup script input file
+- name: create discourse setup script input file
   template:
     src: templates/setup_input.j2
     dest: /tmp/setup_input

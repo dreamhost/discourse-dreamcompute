@@ -1,5 +1,5 @@
 ---
-- name: Create volume
+- name: Create volume for discourse data
   os_volume:
     state: present
     cloud: "{{ auth.cloud }}"
