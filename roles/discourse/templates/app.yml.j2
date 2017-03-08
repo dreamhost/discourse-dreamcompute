@@ -63,7 +63,9 @@ env:
   #DISCOURSE_SMTP_ENABLE_START_TLS: true           # (optional, default true)
 
   {% if discourse.lets_encrypt_email is defined %}
+  {% if (discourse.lets_encrypt_email != "") %}
   LETSENCRYPT_ACCOUNT_EMAIL: "{{ discourse.lets_encrypt_email }}"
+  {% endif %}
   {% endif %}
 
   ## The CDN address for this Discourse instance (configured to pull)
