@@ -40,3 +40,11 @@
     name: "{{ discourse1.openstack.private_v4 }}"
     groups: discourseservers
   when: discourse1.openstack.public_v4 == ""
+
+- name: wait for ssh
+  wait_for:
+    host: "{{ item }}"
+    port: 22
+    timeout: 60
+    state: started
+  with_items: "{{ groups.discourseservers }}"
