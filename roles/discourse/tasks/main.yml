@@ -27,22 +27,17 @@
     repo: "https://github.com/discourse/discourse_docker.git"
     dest: "/var/discourse/discourse_docker"
 
-- name: "check if discourse is already configured"
-  stat:
-    path: "/var/discourse/discourse_docker/containers/app.yml"
-  register: app_config
-
-- name: create discourse setup script input file
+- name: create app.yml file
   template:
-    src: templates/setup_input.j2
-    dest: /tmp/setup_input
+    src: templates/app.yml.j2
+    dest: "/var/discourse/discourse_docker/containers/app.yml"
     owner: root
     group: root
     mode: 0600
-  when: app_config.stat.exists == False
+  register: appconfig
 
-- name: run discourse setup
-  shell: "./discourse-setup < /tmp/setup_input"
+- name: Rebuild discourse with new config
+  shell: "./launcher rebuild app"
   args:
     chdir: /var/discourse/discourse_docker
-  when: app_config.stat.exists == False
+  when: appconfig.changed

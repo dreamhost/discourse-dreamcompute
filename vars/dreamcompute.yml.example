@@ -27,7 +27,7 @@ discourse:
   smtp_user: "postmaster@discourse.example.com"
   smtp_password: ""
 
-  lets_encrypt_email: ""
+  #lets_encrypt_email: "admin@example.com"
 
 # ssh key to put on the server
 key_name: raynor
