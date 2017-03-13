@@ -41,3 +41,7 @@
   args:
     chdir: /var/discourse/discourse_docker
   when: appconfig.changed
+
+- name: Notify user of IP
+  debug:
+    msg: "Discourse has been deployed at {{ inventory_hostname }}"
