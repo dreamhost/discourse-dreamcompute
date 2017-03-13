@@ -1,0 +1,10 @@
+---
+- name: Setup apt autoupgrades
+  apt:
+    name: unattended-upgrades
+    state: present
+
+- name: copy autoupgrade configs
+  copy:
+    src: templates/
+    dest: /etc/apt/apt.conf.d/

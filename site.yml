@@ -24,5 +24,6 @@
   vars_files:
     - "vars/dreamcompute.yml"
   roles:
+    - autoupgrade
     - fail2ban
     - discourse
