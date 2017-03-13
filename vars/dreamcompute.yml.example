@@ -26,6 +26,7 @@ discourse:
   smtp_port: ""
   smtp_user: "postmaster@discourse.example.com"
   smtp_password: ""
+  #smtp_authentication: "plain"
 
   #lets_encrypt_email: "admin@example.com"
 

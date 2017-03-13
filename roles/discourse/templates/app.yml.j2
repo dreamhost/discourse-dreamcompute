@@ -62,7 +62,11 @@ env:
   DISCOURSE_SMTP_PORT: "{{ discourse.smtp_port }}"
   DISCOURSE_SMTP_USER_NAME: "{{ discourse.smtp_user }}"
   DISCOURSE_SMTP_PASSWORD: "{{ discourse.smtp_password }}"
-  #DISCOURSE_SMTP_ENABLE_START_TLS: true           # (optional, default true)
+  {% if discourse.smtp_authentication is defined %}
+  {% if (discourse.smtp_authentication != "") %}
+  DISCOURSE_SMTP_AUTHENTICATION: "{{ discourse.smtp_authentication }}"
+  {% endif %}
+  {% endif %}
 
   {% if discourse.lets_encrypt_email is defined %}
   {% if (discourse.lets_encrypt_email != "") %}
