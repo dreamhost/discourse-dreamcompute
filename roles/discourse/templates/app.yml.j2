@@ -89,12 +89,18 @@ volumes:
 
 ## Plugins go here
 ## see https://meta.discourse.org/t/19157 for details
+{% if discourse.plugins is defined %}
+{% if discourse.plugins|length != 0%}
 hooks:
   after_code:
     - exec:
         cd: $home/plugins
         cmd:
-          - git clone https://github.com/discourse/docker_manager.git
+        {% for item in discourse.plugins %}
+          - git clone {{ item }}
+        {% endfor %}
+{% endif %}
+{% endif %}
 
 ## Any custom commands to run after building
 run:

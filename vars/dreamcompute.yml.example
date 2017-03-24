@@ -30,5 +30,9 @@ discourse:
 
   #lets_encrypt_email: "admin@example.com"
 
+  # List of plugin repos to clone and install
+  plugins:
+    - "https://github.com/discourse/docker_manager.git"
+
 # ssh key to put on the server
 key_name: raynor
