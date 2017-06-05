@@ -17,6 +17,15 @@
     timeout: 200
     flavor: "{{ discourse.flavor }}"
     network: public
+    userdata: |
+        {%- raw -%}#!/bin/bash
+        systemctl stop sshd
+        #systemctl disable sshd
+        apt update && apt install -y python
+        DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
+        #systemctl enable sshd
+        reboot
+        {% endraw %}
     meta:
       hostname: discourse1
   register: discourse1
@@ -41,10 +50,13 @@
     groups: discourseservers
   when: discourse1.openstack.public_v4 == ""
 
+- name: wait for cloud-init to run
+  pause: seconds=20
+
 - name: wait for ssh
   wait_for:
     host: "{{ item }}"
     port: 22
-    timeout: 60
+    timeout: 900
     state: started
   with_items: "{{ groups.discourseservers }}"

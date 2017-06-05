@@ -1,3 +1,20 @@
 ---
 - name: install python2
   raw: "apt update && apt install -y python"
+
+- name: run dist-upgrade
+  raw: "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade"
+  when: hostvars.cloud.discourse1.changed
+
+- name: reboot after dist-upgrade
+  raw: "reboot"
+  when: hostvars.cloud.discourse1.changed
+
+- name: wait for ssh
+  wait_for:
+    host: "{{ item }}"
+    port: 22
+    timeout: 60
+    state: started
+  with_items: "{{ groups.discourseservers }}"
+  when: hostvars.cloud.discourse1.changed
