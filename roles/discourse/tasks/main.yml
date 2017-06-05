@@ -17,6 +17,11 @@
     state: mounted
     name: "/var/discourse"
 
+- name: set vm.overcommit_memory = 1
+  sysctl:
+    name: vm.overcommit_memory
+    value: 1
+
 - name: install docker
   apt:
     name: docker.io
