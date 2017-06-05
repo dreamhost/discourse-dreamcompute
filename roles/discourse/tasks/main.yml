@@ -22,6 +22,9 @@
     name: vm.overcommit_memory
     value: 1
 
+- name: disable transparent hugepage
+  shell: 'echo "never" > /sys/kernel/mm/transparent_hugepage/enabled'
+
 - name: install docker
   apt:
     name: docker.io
