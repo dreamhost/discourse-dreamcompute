@@ -28,6 +28,10 @@ discourse:
   smtp_password: ""
   #smtp_authentication: "plain"
 
+  # If you want discourse to send emails from a different domain than your discourse
+  # hostname, set "sending_email" to that email so discourse knows to use it
+  #sending_email: "noreply@example.com"
+
   #lets_encrypt_email: "admin@example.com"
 
   # List of plugin repos to clone and install
