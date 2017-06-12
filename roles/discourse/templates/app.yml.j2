@@ -14,9 +14,12 @@ templates:
   - "templates/redis.template.yml"
   - "templates/web.template.yml"
   - "templates/web.ratelimited.template.yml"
-## Uncomment these two lines if you wish to add Lets Encrypt (https)
-  #- "templates/web.ssl.template.yml"
-  #- "templates/web.letsencrypt.ssl.template.yml"
+  {% if discourse.lets_encrypt_email is defined %}
+  {% if (discourse.lets_encrypt_email != "") %}
+  - "templates/web.ssl.template.yml"
+  - "templates/web.letsencrypt.ssl.template.yml"
+  {% endif %}
+  {% endif %}
 
 ## which TCP/IP ports should this container expose?
 ## If you want Discourse to share a port with another webserver like Apache or nginx,

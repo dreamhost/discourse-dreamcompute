@@ -17,6 +17,7 @@
     timeout: 200
     flavor: "{{ discourse.flavor }}"
     network: public
+    auto_ip: false
     meta:
       hostname: discourse1
   register: discourse1
@@ -28,6 +29,30 @@
     server: discourse1
     volume: discourse-volume
     device: "/dev/vdb"
+
+- name: create discourse security group
+  os_security_group:
+    name: discourse
+    state: present
+    cloud: "{{ auth.cloud }}"
+
+- name: Open port 80
+  os_security_group_rule:
+    security_group: discourse
+    state: present
+    cloud: "{{ auth.cloud }}"
+    port_range_min: 80
+    port_range_max: 80
+    protocol: tcp
+
+- name: Open port 443
+  os_security_group_rule:
+    security_group: discourse
+    state: present
+    cloud: "{{ auth.cloud }}"
+    port_range_min: 443
+    port_range_max: 443
+    protocol: tcp
 
 - name: Add discourse server to discourse group
   add_host:
