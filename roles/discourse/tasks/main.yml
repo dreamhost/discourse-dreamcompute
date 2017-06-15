@@ -22,6 +22,11 @@
     name: vm.overcommit_memory
     value: 1
 
+- name: set net.core.somaxconn = 512
+  sysctl:
+    name: net.core.somaxconn
+    value: 512
+
 - name: disable transparent hugepage
   shell: 'echo "never" > /sys/kernel/mm/transparent_hugepage/enabled'
 
