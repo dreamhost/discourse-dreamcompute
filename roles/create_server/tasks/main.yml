@@ -16,8 +16,8 @@
     key_name: "{{ key_name }}"
     timeout: 200
     flavor: "{{ discourse.flavor }}"
-    network: public
-    auto_ip: false
+    network: private
+    auto_ip: true
   register: discourse1
 
 - name: Get facts about prod server if creating staging
