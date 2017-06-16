@@ -5,29 +5,34 @@
     cloud: "{{ auth.cloud }}"
     size: "{{ discourse.volume_size }}"
     wait: yes
-    display_name: discourse-volume
+    display_name: "{{ discourse.volume_name }}"
 
 - name: Create server
   os_server:
     state: "present"
     cloud: "{{ auth.cloud }}"
-    name: discourse1
+    name: "{{ discourse.server_name }}"
     image: "{{ discourse.image }}"
     key_name: "{{ key_name }}"
     timeout: 200
     flavor: "{{ discourse.flavor }}"
     network: public
     auto_ip: false
-    meta:
-      hostname: discourse1
   register: discourse1
+
+- name: Get facts about prod server if creating staging
+  os_server_facts:
+    cloud: "{{ auth.cloud }}"
+    server: "{{ discourse.prod_server }}"
+  register: discourse_prod
+  when: discourse.prod_server is defined
 
 - name: attach a volume for database to save data
   os_server_volume:
     state: present
     cloud: "{{ auth.cloud }}"
-    server: discourse1
-    volume: discourse-volume
+    server: "{{ discourse.server_name }}"
+    volume: "{{ discourse.volume_name }}"
     device: "/dev/vdb"
 
 - name: create discourse security group
