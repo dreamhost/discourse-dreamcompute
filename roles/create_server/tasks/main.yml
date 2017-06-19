@@ -51,15 +51,8 @@
     flavor: "{{ discourse.flavor }}"
     network: "private-network"
     auto_ip: true
-    security_groups: discourse,default
+    security_groups: discourse
   register: discourse1
-
-- name: Get facts about prod server if creating staging
-  os_server_facts:
-    cloud: "{{ auth.cloud }}"
-    server: "{{ discourse.prod_server }}"
-  register: discourse_prod
-  when: discourse.prod_server is defined
 
 - name: attach a volume for database to save data
   os_server_volume:
