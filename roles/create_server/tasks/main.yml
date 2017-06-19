@@ -7,39 +7,20 @@
     wait: yes
     display_name: "{{ discourse.volume_name }}"
 
-- name: Create server
-  os_server:
-    state: "present"
-    cloud: "{{ auth.cloud }}"
-    name: "{{ discourse.server_name }}"
-    image: "{{ discourse.image }}"
-    key_name: "{{ key_name }}"
-    timeout: 200
-    flavor: "{{ discourse.flavor }}"
-    network: private
-    auto_ip: true
-  register: discourse1
-
-- name: Get facts about prod server if creating staging
-  os_server_facts:
-    cloud: "{{ auth.cloud }}"
-    server: "{{ discourse.prod_server }}"
-  register: discourse_prod
-  when: discourse.prod_server is defined
-
-- name: attach a volume for database to save data
-  os_server_volume:
-    state: present
-    cloud: "{{ auth.cloud }}"
-    server: "{{ discourse.server_name }}"
-    volume: "{{ discourse.volume_name }}"
-    device: "/dev/vdb"
-
 - name: create discourse security group
   os_security_group:
     name: discourse
     state: present
     cloud: "{{ auth.cloud }}"
+
+- name: Open port 22
+  os_security_group_rule:
+    security_group: discourse
+    state: present
+    cloud: "{{ auth.cloud }}"
+    port_range_min: 22
+    port_range_max: 22
+    protocol: tcp
 
 - name: Open port 80
   os_security_group_rule:
@@ -58,6 +39,35 @@
     port_range_min: 443
     port_range_max: 443
     protocol: tcp
+
+- name: Create server
+  os_server:
+    state: "present"
+    cloud: "{{ auth.cloud }}"
+    name: "{{ discourse.server_name }}"
+    image: "{{ discourse.image }}"
+    key_name: "{{ key_name }}"
+    timeout: 200
+    flavor: "{{ discourse.flavor }}"
+    network: "private-network"
+    auto_ip: true
+    security_groups: discourse,default
+  register: discourse1
+
+- name: Get facts about prod server if creating staging
+  os_server_facts:
+    cloud: "{{ auth.cloud }}"
+    server: "{{ discourse.prod_server }}"
+  register: discourse_prod
+  when: discourse.prod_server is defined
+
+- name: attach a volume for database to save data
+  os_server_volume:
+    state: present
+    cloud: "{{ auth.cloud }}"
+    server: "{{ discourse.server_name }}"
+    volume: "{{ discourse.volume_name }}"
+    device: "/dev/vdb"
 
 - name: Add discourse server to discourse group
   add_host:
