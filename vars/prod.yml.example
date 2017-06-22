@@ -44,5 +44,12 @@ discourse:
   plugins:
     - "https://github.com/discourse/docker_manager.git"
 
+  # Discourse git reference to use, defaults to tests-passed if undefined
+  #version: stable
+
+  # List of IPs to associate to the server, defaults to auto_ip if undefined
+  #ips:
+    #- "IP_ADDR_HERE"
+
 # ssh key to put on the server
 key_name: raynor

@@ -40,7 +40,7 @@
     port_range_max: 443
     protocol: tcp
 
-- name: Create server
+- name: Create server auto_ip
   os_server:
     state: "present"
     cloud: "{{ auth.cloud }}"
@@ -52,7 +52,27 @@
     network: "private-network"
     auto_ip: true
     security_groups: discourse
-  register: discourse1
+  register: discourse_temp1
+  when: discourse.ips is not defined
+
+- name: Create server with specified floating ips
+  os_server:
+    state: "present"
+    cloud: "{{ auth.cloud }}"
+    name: "{{ discourse.server_name }}"
+    image: "{{ discourse.image }}"
+    key_name: "{{ key_name }}"
+    timeout: 200
+    flavor: "{{ discourse.flavor }}"
+    network: "private-network"
+    floating_ips: "{{ discourse.ips }}"
+    security_groups: discourse
+  register: discourse_temp2
+  when: discourse.ips is defined
+
+- name: register discourse1 var
+  set_fact:
+    discourse1: "{{ discourse_temp2 if discourse.ips is defined else discourse_temp1 }}"
 
 - name: attach a volume for database to save data
   os_server_volume:
