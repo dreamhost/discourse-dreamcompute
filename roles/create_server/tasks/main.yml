@@ -49,7 +49,7 @@
     key_name: "{{ key_name }}"
     timeout: 200
     flavor: "{{ discourse.flavor }}"
-    network: "private-network"
+    network: "{{ discourse.private_net }}"
     auto_ip: true
     security_groups: discourse
   register: discourse_temp1
@@ -64,7 +64,7 @@
     key_name: "{{ key_name }}"
     timeout: 200
     flavor: "{{ discourse.flavor }}"
-    network: "private-network"
+    network: "{{ discourse.private_net }}"
     floating_ips: "{{ discourse.ips }}"
     security_groups: discourse
   register: discourse_temp2
