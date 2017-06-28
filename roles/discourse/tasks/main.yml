@@ -30,10 +30,44 @@
 - name: disable transparent hugepage
   shell: 'echo "never" > /sys/kernel/mm/transparent_hugepage/enabled'
 
-- name: install docker
-  apt:
-    name: docker.io
-    state: installed
+- name: install docker gpg key
+  shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -'
+
+- name: add docker official repository
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu trusty stable"
+    state: present
+
+- name: prepare docker install
+  apt: name="{{ item }}" state=installed update_cache=yes
+  with_items:
+     - apt-transport-https
+     - ca-certificates
+     - curl
+     - software-properties-common
+     - linux-image-extra-virtual
+     - docker-ce
+
+- name: reboot for new kernel modules to be available
+  command: /sbin/reboot
+
+- name: wait for reboot
+  wait_for: port=22 host="{{ ansible_host|default(ansible_ssh_host|default(inventory_hostname)) }}" search_regex=OpenSSH delay=10
+  sudo: no
+  connection: local
+
+- name: load AUFS module
+  modprobe:
+    name: aufs
+    state: present
+
+- name: force docker to use AUFS
+  shell: 'echo "DOCKER_OPTS=\"-s aufs\"" >> /etc/default/docker'
+
+- name: restart docker
+  service:
+    name: docker
+    state: restarted
 
 - name: clone discourse docker repo to /var/discourse/discourse_docker
   git:
