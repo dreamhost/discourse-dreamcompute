@@ -1,0 +1,22 @@
+---
+- name: prepare discourse server
+  hosts: discourseservers
+  user: discourse
+  become: true
+  become_user: root
+  vars_files:
+    - "vars/{{ env }}.yml"
+  roles:
+    - prepare_server
+
+- name: prepare discourse
+  hosts: discourseservers
+  user: discourse
+  become: true
+  become_user: root
+  vars_files:
+    - "vars/{{ env }}.yml"
+  roles:
+    - autoupgrade
+    - fail2ban
+    - discourse

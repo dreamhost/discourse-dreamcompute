@@ -16,7 +16,27 @@
   roles:
     - python2
 
-- name: prepare discourse
+- name: prepare discourse server
+  hosts: discourseservers
+  user: ubuntu
+  become: true
+  become_user: root
+  vars_files:
+    - "vars/{{ env }}.yml"
+  roles:
+    - prepare_server
+
+- name: prepare discourse cloud volume
+  hosts: discourseservers
+  user: ubuntu
+  become: true
+  become_user: root
+  vars_files:
+    - "vars/{{ env }}.yml"
+  roles:
+    - prepare_volume
+
+- name: install discourse
   hosts: discourseservers
   user: ubuntu
   become: true

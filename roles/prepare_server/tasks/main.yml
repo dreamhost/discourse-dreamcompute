@@ -1,0 +1,49 @@
+---
+- name: set vm.overcommit_memory = 1
+  sysctl:
+    name: vm.overcommit_memory
+    value: 1
+
+- name: set net.core.somaxconn = 512
+  sysctl:
+    name: net.core.somaxconn
+    value: 512
+
+- name: disable transparent hugepage
+  shell: 'echo "never" > /sys/kernel/mm/transparent_hugepage/enabled'
+
+- name: install docker gpg key
+  shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -'
+
+- name: add docker official repository
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu trusty stable"
+    state: present
+
+- name: prepare docker install
+  apt: name="{{ item }}" state=installed update_cache=yes
+  with_items:
+     - apt-transport-https
+     - ca-certificates
+     - curl
+     - software-properties-common
+     - linux-image-extra-virtual
+     - docker-ce
+
+- name: Reboot system if required
+  command: shutdown -r now 'Rebooting to complete system upgrade'
+            removes=/var/run/reboot-required
+
+- name: wait for reboot
+  wait_for: port=22 host="{{ ansible_host|default(ansible_ssh_host|default(inventory_hostname)) }}" search_regex=OpenSSH delay=10
+  sudo: no
+  connection: local
+
+- name: load AUFS module
+  modprobe:
+    name: aufs
+    state: present
+
+- name: force docker to use AUFS
+  shell: 'echo "DOCKER_OPTS=\"-s aufs\"" >> /etc/default/docker'
+
