@@ -36,7 +36,7 @@ params:
   db_shared_buffers: "{{ discourse.db_shared_buffers }}"
 
   ## can improve sorting performance, but adds memory usage per-connection
-  #db_work_mem: "40MB"
+  db_work_mem: "{{ discourse.db_work_mem }}"
 
   ## Which Git revision should this container use? (default: tests-passed)
   {% if discourse.version is defined %}

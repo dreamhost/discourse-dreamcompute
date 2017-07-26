@@ -30,6 +30,7 @@ discourse:
 
   # Set db_shared_buffers to a max of 25% of the total memory.
   db_shared_buffers: "1024MB"
+  db_work_mem: "40MB"
 
   # DNS name for your server
   hostname: "discourse.example.com"
