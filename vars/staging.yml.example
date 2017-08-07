@@ -24,6 +24,14 @@ discourse:
   # OS image to use
   image: Ubuntu-16.04
 
+  ## How many concurrent web requests are supported? Depends on memory
+  ## and CPU cores. Rule of thumb: 2 per vCPU
+  unicorn_workers: 8
+
+  # Set db_shared_buffers to a max of 25% of the total memory.
+  db_shared_buffers: "1024MB"
+  db_work_mem: "40MB"
+
   # DNS name for your server
   hostname: "discourse.example.com"
 
