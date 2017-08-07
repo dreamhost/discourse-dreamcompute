@@ -12,6 +12,13 @@
 - name: disable transparent hugepage
   shell: 'echo "never" > /sys/kernel/mm/transparent_hugepage/enabled'
 
+- name: prepare docker install
+  apt: name="{{ item }}" state=installed update_cache=yes
+  with_items:
+     - apt-transport-https
+     - ca-certificates
+     - curl
+
 - name: install docker gpg key
   shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -'
 
@@ -23,9 +30,6 @@
 - name: prepare docker install
   apt: name="{{ item }}" state=installed update_cache=yes
   with_items:
-     - apt-transport-https
-     - ca-certificates
-     - curl
      - software-properties-common
      - linux-image-extra-virtual
      - docker-ce
