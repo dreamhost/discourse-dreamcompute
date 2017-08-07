@@ -64,3 +64,5 @@ discourse:
 
 # ssh key to put on the server
 key_name: raynor
+
+datadog_api_key: API_KEY_HERE

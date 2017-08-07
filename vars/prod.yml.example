@@ -10,10 +10,10 @@ discourse:
   private_net: "private-network"
 
   # The name of the server to create
-  server_name: "discourse1"
+  server_name: "discourse1-prod"
 
   # the name of the volume to create
-  volume_name: "discourse-volume"
+  volume_name: "discourse-volume-prod"
 
   # the size in GB of the volume to attach to /var/discourse on the server
   volume_size: 30
@@ -23,6 +23,14 @@ discourse:
 
   # OS image to use
   image: Ubuntu-16.04
+
+  ## How many concurrent web requests are supported? Depends on memory
+  ## and CPU cores. Rule of thumb: 2 per vCPU
+  unicorn_workers: 8
+
+  # Set db_shared_buffers to a max of 25% of the total memory.
+  db_shared_buffers: "1024MB"
+  db_work_mem: "40MB"
 
   # DNS name for your server
   hostname: "discourse.example.com"
@@ -56,3 +64,5 @@ discourse:
 
 # ssh key to put on the server
 key_name: raynor
+
+datadog_api_key: API_KEY_HERE
