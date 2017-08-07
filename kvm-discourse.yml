@@ -20,3 +20,5 @@
     - autoupgrade
     - fail2ban
     - discourse
+    - Datadog.datadog
+    - datadog_docker

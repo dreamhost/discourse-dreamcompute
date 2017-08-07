@@ -1,0 +1,10 @@
+---
+- name: add dd-agent user to docker group
+  user:
+    name: dd-agent
+    groups: docker
+
+- name: create docker_daemon.yml file
+  copy:
+    dest: /etc/dd-agent/conf.d/docker_daemon.yaml
+    src: docker_daemon.yaml
