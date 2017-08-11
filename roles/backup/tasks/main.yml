@@ -1,0 +1,59 @@
+---
+- name: download s3cmd
+  get_url:
+    dest: /root/s3cmd.zip
+    url: https://github.com/s3tools/s3cmd/releases/download/v2.0.0/s3cmd-2.0.0.zip
+
+- name: unzip s3cmd
+  unarchive:
+    dest: /root
+    src: /root/s3cmd.zip
+    creates: /root/s3cmd-2.0.0
+    remote_src: yes
+
+- name: Create /root/bin
+  file:
+    path: /root/bin
+    state: directory
+    mode: 0700
+
+- name: create /root/bin/s3cmd symlink
+  file:
+    path: /root/bin/s3cmd
+    state: link
+    src: /root/s3cmd-2.0.0/s3cmd
+
+- name: create /root/bin/S3 symlink
+  file:
+    path: /root/bin/S3
+    state: link
+    src: /root/s3cmd-2.0.0/S3
+
+- name: download backup script
+  git:
+    dest: /var/discourse/discourse-backup
+    repo: https://github.com/squidboylan/discourse-backup.git
+
+- name: Create s3cmd config
+  template:
+    dest: /root/.s3cfg
+    src: s3cfg.j2
+
+- name: set cron bucket var
+  cronvar:
+    name: bucket
+    value: "{{ backup.bucket }}"
+    state: present
+
+- name: set cron s3cmd_bin var
+  cronvar:
+    name: s3cmd_bin
+    value: "/root/bin/s3cmd"
+    state: present
+
+- name: create backup cron
+  cron:
+    name: Backup cron
+    job: /var/discourse/discourse-backup/backup-script.sh > /dev/null
+    minute: 0
+    hour: 6

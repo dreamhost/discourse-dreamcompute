@@ -1,0 +1,10 @@
+[default]
+access_key = {{ backup.s3_access_key }}
+secret_key = {{ backup.s3_secret_key }}
+host_base = objects-us-west-1.dream.io
+host_bucket = %(bucket)s.objects-us-west-1.dream.io
+enable_multipart = True
+multipart_chunk_size_mb = 15
+use_https = True
+website_endpoint = %(bucket)s.objects-website-us-west-1.dream.io
+verbosity = ERROR

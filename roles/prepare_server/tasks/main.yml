@@ -18,6 +18,8 @@
      - apt-transport-https
      - ca-certificates
      - curl
+     - unzip
+     - python-dateutil
 
 - name: install docker gpg key
   shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -'
