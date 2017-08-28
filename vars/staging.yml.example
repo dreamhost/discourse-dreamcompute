@@ -66,3 +66,10 @@ discourse:
 key_name: raynor
 
 datadog_api_key: API_KEY_HERE
+
+backup:
+  s3_access_key: ACCESS_KEY_HERE
+
+  s3_secret_key: SECRET_KEY_HERE
+
+  bucket: BACKUP_BUCKET_HERE
