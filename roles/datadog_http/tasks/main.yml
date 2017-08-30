@@ -1,0 +1,7 @@
+---
+
+- name: configure http check for datadog
+  template:
+    dest: /etc/dd-agent/conf.d/http_check.yaml
+    src: http.yaml.j2
+    mode: 644

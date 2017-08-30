@@ -1,0 +1,10 @@
+init_config:
+
+instances:
+  - name: {{ discourse.hostname }} http check
+    url: http://{{ discourse.hostname }}
+    timeout: 1
+
+  - name: {{ discourse.hostname }} https check
+    url: https://{{ discourse.hostname }}
+    timeout: 1

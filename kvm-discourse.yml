@@ -22,4 +22,5 @@
     - discourse
     - Datadog.datadog
     - datadog_docker
+    - datadog_http
     - backup
